@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/taehyeong224/slack-bot#readme",
   "dependencies": {
+    "dotenv": "^8.0.0",
     "slackbots": "^1.2.0"
   }
 }

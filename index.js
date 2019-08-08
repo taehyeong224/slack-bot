@@ -1,9 +1,10 @@
 const SlackBot = require('slackbots');
+require('dotenv').config();
 
 // create a bot
 const bot = new SlackBot({
-    token: 'xoxb-658186575794-719968351477-KZrw2NbAFjlb4vsFbwrS6duR', // Add a bot https://my.slack.com/services/new/bot and put the token 
-    name: 'my-bot'
+    token: process.env.TOKEN, // Add a bot https://my.slack.com/services/new/bot and put the token 
+    name: '아직 모자른 봇'
 });
 
 bot.on('start', function() {
