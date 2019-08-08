@@ -1,28 +1,52 @@
-const SlackBot = require('slackbots');
+const { RTMClient } = require('@slack/rtm-api');
+const { WebClient } = require('@slack/web-api');
+
 require('dotenv').config();
 
-// create a bot
-const bot = new SlackBot({
-    token: process.env.TOKEN, // Add a bot https://my.slack.com/services/new/bot and put the token 
-    name: '아직 모자른 봇'
+const channels = {
+    test: "CM7QQ4VAT",
+    general: "CKC5WGP8B"
+}
+
+// An access token (from your Slack app or custom integration - usually xoxb)
+const token = process.env.TOKEN;
+const general = channels.general;
+// The client is initialized and then started to get an active connection to the platform
+const rtm = new RTMClient(token);
+const web = new WebClient(token);
+
+rtm.start().catch(console.error);
+// Calling `rtm.on(eventName, eventHandler)` allows you to handle events (see: https://api.slack.com/events)
+// When the connection is active, the 'ready' event will be triggered
+
+rtm.on('ready', () => {
+    console.log("rtm ready");
+    // web.chat.postMessage({ channel: general, text: '봇 준비 완료', icon_emoji: ":hugging_face:" });
+})
+
+rtm.on('message', (message) => {
+    try {
+        console.log(message);
+        const { channel, user, text } = message;
+        if (text === '바보') {
+            web.chat.postMessage({ channel, text: '반사', icon_emoji: ":raised_hand_with_fingers_splayed:" });
+        }
+    } catch (e) {
+        console.error("message error : ", error);
+    }
+
 });
 
-bot.on('start', function() {
-    // more information about additional params https://api.slack.com/methods/chat.postMessage
-    var params = {
-        icon_emoji: ':cat:'
-    };
-    
-    // define channel, where bot exist. You can adjust it there https://my.slack.com/services 
-    bot.postMessageToChannel('general', '아 덥다!!!', params);
-    
-    // define existing username instead of 'user_name'
-    // bot.postMessageToUser('user_name', 'meow!', params); 
-    
-    // If you add a 'slackbot' property, 
-    // you will post to another user's slackbot channel instead of a direct message
-    // bot.postMessageToUser('user_name', 'meow!', { 'slackbot': true, icon_emoji: ':cat:' }); 
-    
-    // define private group instead of 'private_group', where bot exist
-    // bot.postMessageToGroup('private_group', 'meow!', params); 
-});
+
+// After the connection is open, your app will start receiving other events.
+rtm.on('user_typing', (event) => {
+    console.log(event);
+})
+
+rtm.on("disconnected", (error) => {
+    console.error("disconnected : ", error)
+})
+
+rtm.on("channel_created", (event) => {
+    web.chat.postMessage({ channel: general, text: `#${event.channel.name} 채널이 생성되었습니다.`, icon_emoji: ":raised_hand_with_fingers_splayed:" });
+})
