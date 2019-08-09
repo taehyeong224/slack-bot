@@ -27,16 +27,17 @@ rtm.on('ready', () => {
 })
 
 const bansaList = ['바보', '멍청이'];
+const dustList = ['미세먼지', '미먼'];
+
 rtm.on('message', (message) => {
     try {
         console.log(message);
         const { channel, user, text } = message;
         const filter = bansaList.filter(s => s === text);
-        if (filter.length > 0) {
+        if (checkHasKeyword(bansaList, text)) {
             web.chat.postMessage({ channel, text: '반사', icon_emoji: ":raised_hand_with_fingers_splayed:" });
         }
-
-        if (text === "미세먼지") {
+        if (checkHasKeyword(dustList, text)) {
             dust();
         }
     } catch (e) {
@@ -74,4 +75,9 @@ const dust = async () => {
 현재 서울 미세먼지
 pm10: ${pm10.data} ${pm10.status}
 pm2.5: ${pm25.data} ${pm25.status}`, icon_emoji: ":mask:" });
+}
+
+const checkHasKeyword = (list, target) => {
+    const filter = list.filter(s => s === target);
+    return filter.length > 0;
 }
