@@ -25,6 +25,10 @@ app.post('/webhook', (req, res) => {
     res.status(200).json({msg: "success"});
 })
 
+app.get("/", (req, res) => {
+    res.status(200).json({msg: "success"});
+})
+
 app.listen(app.get('port'), () => {
     console.log('running on port', app.get('port'));
 })
