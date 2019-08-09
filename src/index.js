@@ -4,13 +4,8 @@ import { RTMClient } from "@slack/rtm-api";
 import { WebClient } from "@slack/web-api";
 import * as schedule from "node-schedule";
 import { getStatus, TYPE } from "./dust";
-
-import express from "express";
-import * as bodyParser from 'body-parser';
-
-
-
 require('dotenv').config();
+
 const channels = {
     test: "CM7QQ4VAT",
     general: "CKC5WGP8B"
@@ -87,22 +82,3 @@ const checkHasKeyword = (list, target) => {
     const filter = list.filter(s => s === target);
     return filter.length > 0;
 }
-
-// express setting start
-const app = express();
-app.set("port", process.env.PORT || 3000)
-
-app.use(bodyParser.json()); // support json encoded bodies
-app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
-
-app.post('/webhook', (req, res) => {
-    console.log(req.body);
-    const {app, user, url, head, head_long, git_log, release} = req.body;
-    web.chat.postMessage({ channel: general, text: `${user}님이 ${app} 배포 완료, ${git_log}`, icon_emoji: ":hugging_face:" });
-    res.status(200).json({msg: "success"});
-})
-
-app.listen(app.get('port'), () => {
-    console.log('running on port', app.get('port'));
-})
-// express setting end
