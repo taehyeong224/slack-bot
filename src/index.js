@@ -1,9 +1,10 @@
-const { RTMClient } = require('@slack/rtm-api');
-const { WebClient } = require('@slack/web-api');
-const schedule = require('node-schedule');
+import '@babel/polyfill'
 
+import { RTMClient } from "@slack/rtm-api";
+import { WebClient } from "@slack/web-api";
+import * as schedule from "node-schedule";
+import { getStatus, TYPE } from "./dust";
 require('dotenv').config();
-
 const channels = {
     test: "CM7QQ4VAT",
     general: "CKC5WGP8B"
@@ -34,6 +35,10 @@ rtm.on('message', (message) => {
         if (filter.length > 0) {
             web.chat.postMessage({ channel, text: '반사', icon_emoji: ":raised_hand_with_fingers_splayed:" });
         }
+
+        if (text === "미세먼지") {
+            dust();
+        }
     } catch (e) {
         console.error("message error : ", error);
     }
@@ -54,6 +59,19 @@ rtm.on("channel_created", (event) => {
     web.chat.postMessage({ channel: general, text: `#${event.channel.name} 채널이 생성되었습니다.`, icon_emoji: ":raised_hand_with_fingers_splayed:" });
 })
 
-schedule.scheduleJob('0 0 13 * * ?', function () {
+schedule.scheduleJob('0 0 13 * * ?', () => {
     web.chat.postMessage({ channel: general, text: `점심 맛있게 드셨나요?`, icon_emoji: ":raised_hand_with_fingers_splayed:" });
 });
+
+schedule.scheduleJob('30 * * * *', () => {
+    dust();
+});
+
+const dust = async () => {
+    const pm10 = await getStatus(TYPE.PM10)
+    const pm25 = await getStatus(TYPE.PM25)
+    web.chat.postMessage({ channel: general, text: `
+현재 서울 미세먼지
+pm10: ${pm10.data} ${pm10.status}
+pm2.5: ${pm25.data} ${pm25.status}`, icon_emoji: ":mask:" });
+}
