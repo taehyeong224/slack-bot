@@ -6,6 +6,10 @@
     "start": "node dist/index.js",
     "build": "babel -d dist src"
   },
+  "engines": {
+    "node": "10.16.0",
+    "npm": "6.10.3"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/taehyeong224/slack-bot.git"
