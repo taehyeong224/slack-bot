@@ -1,14 +1,9 @@
 import express from "express";
 import * as bodyParser from 'body-parser';
 import { WebClient } from "@slack/web-api";
+import {general, token} from "./config";
 require('dotenv').config();
 
-const channels = {
-    test: "CM7QQ4VAT",
-    general: "CKC5WGP8B"
-}
-const token = process.env.TOKEN;
-const general = channels.test;
 const web = new WebClient(token);
 
 // express setting start
