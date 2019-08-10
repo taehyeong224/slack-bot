@@ -6,7 +6,7 @@ export const channels = {
 }
 
 export const token = process.env.TOKEN;
-export const general = channels.test;
+export const general = channels.general;
 
 export const PM10 = {
     GOOD: 30,
