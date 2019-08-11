@@ -26,6 +26,7 @@ const requestCurrentWeather = async (city) => {
 
 export const getCurrentWeather = async (city) => {
     const result = await requestCurrentWeather(city);
+    console.log("getCurrentWeather > result : ", result);
     if (result["cod"] === 200) {
         return {
             cod: 200,
