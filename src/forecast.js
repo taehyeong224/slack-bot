@@ -31,10 +31,10 @@ export const getCurrentWeather = async (city) => {
         return {
             cod: 200,
             weather: result["weather"]["main"],
-            temp: result["weather"]["main"]["temp"],
-            humidity: result["weather"]["main"]["humidity"],
-            tempMin: result["weather"]["main"]["temp_min"],
-            tempMax: result["weather"]["main"]["temp_max"],
+            temp: result["main"]["temp"],
+            humidity: result["main"]["humidity"],
+            tempMin: result["main"]["temp_min"],
+            tempMax: result["main"]["temp_max"],
         }
     } else if (result["cod"] === 404) {
         return {
