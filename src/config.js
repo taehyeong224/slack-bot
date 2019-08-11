@@ -6,6 +6,7 @@ export const channels = {
 }
 
 export const token = process.env.TOKEN;
+export const FORECAST_TOKEN = process.env.FORECAST_TOKEN;
 export const general = channels.general;
 
 export const PM10 = {
