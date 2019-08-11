@@ -24,7 +24,7 @@ const bansaList = ['바보', '멍청이'];
 const dustList = ['미세먼지', '미먼'];
 const forecastLIst = ['현재날씨', '현날'];
 
-rtm.on('message', (message) => {
+rtm.on('message', async (message) => {
     try {
         console.log(message);
         const {channel, user, text} = message;
@@ -36,7 +36,8 @@ rtm.on('message', (message) => {
         }
 
         if (checkHasKeyword(forecastLIst, text)) {
-            const result = getCurrentWeather(text.split(" ")[1]);
+            const result = await getCurrentWeather(text.split(" ")[1]);
+            console.log("result : ", result);
             let message = "";
             if (result["cod"] === 200) {
                 message = `
@@ -51,6 +52,7 @@ rtm.on('message', (message) => {
             } else {
                 message = `죄송합니다 서버에 문제가 있나봐요`
             }
+            console.log(message)
             web.chat.postMessage({channel, text: message, icon_emoji: ":fox_face:"});
         }
     } catch (e) {
