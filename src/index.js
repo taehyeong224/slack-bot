@@ -90,11 +90,17 @@ schedule.scheduleJob('30 * * * *', () => {
 const dust = async () => {
     const pm10 = await getStatus(TYPE.PM10)
     const pm25 = await getStatus(TYPE.PM25)
-    web.chat.postMessage({
-        channel: general, text: `
+    let message = ``;
+    if (!pm10 || !pm25) {
+        message = `서버에 문제가 생겼나봐요`
+    } else {
+        message = `
 현재 서울 미세먼지
 pm10: ${pm10.data} ${pm10.status}
-pm2.5: ${pm25.data} ${pm25.status}`, icon_emoji: ":mask:"
+pm2.5: ${pm25.data} ${pm25.status}`
+    }
+    web.chat.postMessage({
+        channel: general, text: message, icon_emoji: ":mask:"
     });
 };
 

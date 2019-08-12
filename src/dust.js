@@ -4,7 +4,9 @@ const baseURL = `http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInfor
 
 export const getStatus = async type => {
   const data = await requestDust(type);
-  console.log(data);
+  if (!data) {
+    return false;
+  }
   const seoulData = data.list[0].seoul;
   let status = "";
 
@@ -51,5 +53,6 @@ const requestDust = async type => {
     return response.data;
   } catch (e) {
     console.error("axios error", e);
+    return false;
   }
 };
