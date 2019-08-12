@@ -95,7 +95,7 @@ const dust = async () => {
         message = `서버에 문제가 생겼나봐요`
     } else {
         message = `
-현재 서울 미세먼지
+현재 서울 미세 먼지
 pm10: ${pm10.data} ${pm10.status}
 pm2.5: ${pm25.data} ${pm25.status}`
     }
