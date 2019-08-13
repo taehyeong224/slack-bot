@@ -17,8 +17,7 @@ rtm.start().catch(console.error);
 
 rtm.on('ready', () => {
     console.log("rtm ready");
-    // web.chat.postMessage({ channel: general, text: '봇 준비 완료', icon_emoji: ":hugging_face:" });
-})
+});
 
 const bansaList = ['바보', '멍청이'];
 const dustList = ['미세먼지', '미먼'];
@@ -58,7 +57,7 @@ rtm.on('message', async (message) => {
         }
 
         if (checkHasKeyword(stackOverFlow, text)) {
-            const search = text.toLowerCase().split("so:")[1];
+            const search = text.toLowerCase().trim().split("so:")[1].split(" ").join("+");
             web.chat.postMessage({channel: general, text: `https://stackoverflow.com/search?q=${search}`, icon_emoji: ":fox_face:"})
         }
     } catch (e) {
@@ -111,6 +110,5 @@ pm2.5: ${pm25.data} ${pm25.status}`
 };
 
 const checkHasKeyword = (list, target) => {
-    const filter = list.filter(s => target.includes(s));
-    return filter.length > 0;
+    return list.filter(s => target.includes(s)).length > 0;
 };
