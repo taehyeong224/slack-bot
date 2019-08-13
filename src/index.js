@@ -57,7 +57,7 @@ rtm.on('message', async (message) => {
         }
 
         if (checkHasKeyword(stackOverFlow, text)) {
-            const search = text.toLowerCase().trim().split("so:")[1].split(" ").join("+");
+            const search = text.toLowerCase().trim().split("so:")[1].trim().split(" ").join("+");
             web.chat.postMessage({channel: general, text: `https://stackoverflow.com/search?q=${search}`, icon_emoji: ":fox_face:"})
         }
     } catch (e) {
