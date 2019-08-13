@@ -23,6 +23,7 @@ rtm.on('ready', () => {
 const bansaList = ['바보', '멍청이'];
 const dustList = ['미세먼지', '미먼'];
 const forecastLIst = ['현재날씨', '현날'];
+const stackOverFlow = ['so:', 'SO:'];
 
 rtm.on('message', async (message) => {
     try {
@@ -54,6 +55,11 @@ rtm.on('message', async (message) => {
             }
             console.log(message)
             web.chat.postMessage({channel, text: message, icon_emoji: ":fox_face:"});
+        }
+
+        if (checkHasKeyword(stackOverFlow, text)) {
+            const search = text.toLowerCase().split("so:")[1];
+            web.chat.postMessage({channel: general, text: `https://stackoverflow.com/search?q=${search}`, icon_emoji: ":fox_face:"})
         }
     } catch (e) {
         console.error("message error : ", error);
