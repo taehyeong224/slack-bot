@@ -1,6 +1,5 @@
 const schedule = require('node-schedule');
 const {RTMClient, WebClient} = require('@slack/client');
-const weather = require('weather-js');
 const token = '<#YOUR-SLACK-TOKEN#>';
 
 const rtm = new RTMClient(token);
