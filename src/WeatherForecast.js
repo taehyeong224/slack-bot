@@ -1,6 +1,6 @@
 const schedule = require('node-schedule');
 const {RTMClient, WebClient} = require('@slack/client');
-const weather = require('WeatherForecast-js');
+const weather = require('weather-js');
 const token = '<#YOUR-SLACK-TOKEN#>';
 
 const rtm = new RTMClient(token);
@@ -97,6 +97,5 @@ const scheduleJob = schedule.scheduleJob(scheduleRule, function(){
                     sendWeatherMessage('Seoul', channels);
     });
 });
-
 
 

@@ -6,7 +6,7 @@ import * as schedule from "node-schedule";
 import {getStatus} from "./dust";
 import {general, token, TYPE} from "./config";
 import {getCurrentWeather} from "./forecast";
-import {getMatches} from "./football";
+
 
 // The client is initialized and then started to get an active connection to the platform
 const rtm = new RTMClient(token);
@@ -18,13 +18,12 @@ rtm.start().catch(console.error);
 
 rtm.on('ready', () => {
     console.log("rtm ready");
-});
+    // web.chat.postMessage({ channel: general, text: '봇 준비 완료', icon_emoji: ":hugging_face:" });
+})
 
 const bansaList = ['바보', '멍청이'];
 const dustList = ['미세먼지', '미먼'];
 const forecastLIst = ['현재날씨', '현날'];
-const stackOverFlow = ['so:', 'SO:'];
-const football = ['f:', 'F:'];
 
 rtm.on('message', async (message) => {
     try {
@@ -57,23 +56,8 @@ rtm.on('message', async (message) => {
             console.log(message)
             web.chat.postMessage({channel, text: message, icon_emoji: ":fox_face:"});
         }
-
-        if (checkHasKeyword(stackOverFlow, text)) {
-            const search = text.toLowerCase().trim().split("so:")[1].trim().split(" ").join("+");
-            web.chat.postMessage({channel: general, text: `https://stackoverflow.com/search?q=${search}`, icon_emoji: ":fox_face:"})
-        }
-
-        if (checkHasKeyword(football, text)) {
-            const params = text.toLowerCase().trim().split("f:")[1].trim().split(" ");
-            if (params.length !== 3) {
-                console.log("ex) f: premier-league 19-20 round-3")
-            } else {
-                const msg = await getMatches(params[0], params[1], params[2]);
-                web.chat.postMessage({channel: general, text: msg, icon_emoji: ":fox_face:"})
-            }
-        }
     } catch (e) {
-        console.error("message error : ", e);
+        console.error("message error : ", error);
     }
 
 });
@@ -122,5 +106,6 @@ pm2.5: ${pm25.data} ${pm25.status}`
 };
 
 const checkHasKeyword = (list, target) => {
-    return list.filter(s => target.includes(s)).length > 0;
+    const filter = list.filter(s => target.includes(s));
+    return filter.length > 0;
 };
