@@ -73,6 +73,7 @@ rtm.on('message', async (message) => {
             console.log("result: " + result);
             
             let message = "";
+            console.log(result["resultCode"]);
             if (result["resultCode"] === 200) {
                 message = result["message"];
             } else if (result["resultCode"] === 404) {
@@ -81,13 +82,12 @@ rtm.on('message', async (message) => {
                 message = `죄송합니다 서버에 문제가 있나봐요`
             }
             console.log(message);
-            web.chat.postMessage({channel, text: message, icon_emoji: ":fox_face:"});
+            web.chat.postMessage({channel, username: '노는 게 제일 좋아', text: message, icon_url: "https://pbs.twimg.com/profile_images/931571066534690816/YjOsFwcJ_400x400.jpg"});
         }
 
     } catch (e) {
         console.error("message error : ", error);
     }
-
 });
 
 

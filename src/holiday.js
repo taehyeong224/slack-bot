@@ -1,35 +1,31 @@
 import * as axios from "axios";
-import { SSL_OP_MSIE_SSLV2_RSA_PADDING } from "constants";
+import {HOLIDAY_API_KEY} from "./config";
 //import {convert} from 'xml-js';
-const parseString = require('xml-js').parseString;
+//const parseString = require('xml-js').parseString;
 
 const baseURL = `http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService`;
-
-const serviceKey = `lBBRnvK6Ek%2BPnbtG3t1M7FJb13qDfUC8CqW2vcRF6s%2B0cBaeeUxpwOziJ7SzBnpmN6ZBQ5TPcisYZ%2BoM8gXy%2BA%3D%3D`;
-
-//test
-//http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo?solYear=2019&solMonth=08&ServiceKey=lBBRnvK6Ek%2BPnbtG3t1M7FJb13qDfUC8CqW2vcRF6s%2B0cBaeeUxpwOziJ7SzBnpmN6ZBQ5TPcisYZ%2BoM8gXy%2BA%3D%3D
 
 export const getHoliday = async(month) => {
     let solYear = 2019;
     let solMonth = String(month);
     if (solMonth.length < 2) solMonth = `0${solMonth}`;
     try {
-        const url = `${baseURL}/getHoliDeInfo?solYear=${solYear}&solMonth=${solMonth}&ServiceKey=${serviceKey}`;
+        const url = `${baseURL}/getHoliDeInfo?solYear=${solYear}&solMonth=${solMonth}&ServiceKey=${HOLIDAY_API_KEY}`;
         console.log(url);
         
         const response = await axios.get(url);
-        console.log("-------------------------");
-        console.log(response.data);
-        console.log("-------------------------");
         let resultCode = response.data.response.header.resultCode;
         const holiday = response.data.response.body.items.item;
-        console.log(url);
+
+        console.log("resultCode : " + resultCode);
+        console.log(holiday);
+
         // 성공
         if (resultCode === '00') {
+            let msg = printMessage(month, holiday)
             return {
                 resultCode: 200,
-                message: printMessage(month, holiday)
+                message: msg
             };
         }
         else {
@@ -38,40 +34,63 @@ export const getHoliday = async(month) => {
             };
         }
         
-        
         //console.log(holidayList);
         
         //const result = convert.xml2json(response.data.response.body.items);
-        //console.log("--------------------------result--------------------------");
         //console.log(result);
     } catch(e) {
         console.error("axios error", e.response);
-        if (e.response.status === 404) {
+        //if (e.response.status === 404) {
             return {
                 resultCode: 404
             }
-        }
+        //}
     }
 }
 
-const printMessage = (month, holidayList) => {
+const printMessage = (month, holiday) => {
     let message = `${month}월 휴일은`;
     let dateName = "";
-    for (let i = 0; i < holidayList.length; i++) {
-        if (dateName != holidayList[i].dateName) {
-            message += `\n${holidayList[i].dateName} : `;
-            dateName = holidayList[i].dateName;
-        } else {
-            message += ", ";
-        }
-        message += holidayList[i].locdate;
-    }
 
+    if (Array.isArray(holiday)) {
+        for (let i = 0; i < holiday.length; i++) {
+            if (dateName != holiday[i].dateName) {
+                message += `\n${holiday[i].dateName} : `;
+                dateName = holiday[i].dateName;
+            } else {
+                message += ", ";
+            }
+            message += `${getDateString(holiday[i].locdate)}`
+        }
+    } else {
+        message += `\n${holiday.dateName} : ${getDateString(holiday.locdate)}`;
+    }
+    
     message += "\n입니다.";
     console.log(message);
     return message;
 }
 
+const getDateString = (holidayLocdate) => {
+    const dateObj = getDate(holidayLocdate);
+    let index = dateObj.getDay();
+
+    const days = ["일", "월", "화", "수", "목", "금", "토"];
+    let day = days[index];
+
+    let str = `${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일 (${day})`;
+    return str;
+}
+
+const getDate = (holidayLocdate) => {
+    let year = String(holidayLocdate).substring(0, 4);
+    let month = String(holidayLocdate).substring(4, 6);
+    let date = String(holidayLocdate).substring(6, 8);
+    
+    return new Date(`${year}-${month}-${date}`);
+}
+
+// Number.prototype.pad = function() 으로 하면 작동함
 // Number.prototype.pad = () => {
 //     let str = String(this);
 //     if (str.length < 2) str = "0" + str;
