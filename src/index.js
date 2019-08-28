@@ -121,6 +121,7 @@ pm2.5: ${pm25.data} ${pm25.status}`
     });
 };
 
+
 const checkHasKeyword = (list, target) => {
     return list.filter(s => target.includes(s)).length > 0;
 };
