@@ -9,6 +9,10 @@ import {getCurrentWeather} from "./forecast";
 import {getHoliday} from "./holiday";
 import {getKeywordRanking} from "./realTimeKeywordRanking";
 
+import { convertSearchQuery } from './Search';
+import { ConsoleLogger } from '@slack/logger';
+
+
 // The client is initialized and then started to get an active connection to the platform
 const rtm = new RTMClient(token);
 const web = new WebClient(token);
@@ -20,7 +24,7 @@ rtm.start().catch(console.error);
 
 rtm.on('ready', () => {
     console.log("rtm ready");
-    
+
     // web.chat.postMessage({ channel: general, text: '봇 준비 완료', icon_emoji: ":hugging_face:" });
 })
 
@@ -61,6 +65,7 @@ rtm.on('message', async (message) => {
             console.log(message)
             web.chat.postMessage({channel, text: message, icon_emoji: ":fox_face:"});
         }
+
 
         // -------------------- 공휴일 --------------------
         if (checkHasKeyword(holidayList, text)) {
@@ -153,3 +158,20 @@ const checkHasKeyword = (list, target) => {
     const filter = list.filter(s => target.includes(s));
     return filter.length > 0;
 };
+
+
+//Search.js
+//메시지 입력 이벤트 핸들러
+rtm.on("message", (message) => {
+    if(!message.text.includes("검색")){
+        return;
+    }
+    let queryURI = convertSearchQuery(message.text);
+    if(queryURI){
+        web.chat.postMessage({
+            channel : message.channel,
+            text : queryURI,
+            as_user : true
+        });
+    }
+});

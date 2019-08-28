@@ -9,7 +9,7 @@ export const token = process.env.TOKEN;
 export const FORECAST_TOKEN = process.env.FORECAST_TOKEN;
 export const FOOTBALL_KEY = process.env.FOOTBALL_KEY;
 
-export const general = channels.general;
+export const general = channels.test;
 
 export const PM10 = {
     GOOD: 30,
