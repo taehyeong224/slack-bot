@@ -12,7 +12,7 @@ export const getHoliday = async(month) => {
     try {
         const url = `${baseURL}/getHoliDeInfo?solYear=${solYear}&solMonth=${solMonth}&ServiceKey=${HOLIDAY_API_KEY}`;
         console.log(url);
-        
+
         const response = await axios.get(url);
         let resultCode = response.data.response.header.resultCode;
         const holiday = response.data.response.body.items.item;
@@ -33,17 +33,17 @@ export const getHoliday = async(month) => {
                 resultCode: 500,
             };
         }
-        
+
         //console.log(holidayList);
-        
+
         //const result = convert.xml2json(response.data.response.body.items);
         //console.log(result);
     } catch(e) {
         console.error("axios error", e.response);
         //if (e.response.status === 404) {
-            return {
-                resultCode: 404
-            }
+        return {
+            resultCode: 404
+        }
         //}
     }
 }
@@ -65,7 +65,7 @@ const printMessage = (month, holiday) => {
     } else {
         message += `\n${holiday.dateName} : ${getDateString(holiday.locdate)}`;
     }
-    
+
     message += "\n입니다.";
     console.log(message);
     return message;
@@ -86,7 +86,7 @@ const getDate = (holidayLocdate) => {
     let year = String(holidayLocdate).substring(0, 4);
     let month = String(holidayLocdate).substring(4, 6);
     let date = String(holidayLocdate).substring(6, 8);
-    
+
     return new Date(`${year}-${month}-${date}`);
 }
 

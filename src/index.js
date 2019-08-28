@@ -7,6 +7,7 @@ import {getStatus} from "./dust";
 import {general, token, TYPE} from "./config";
 import {getCurrentWeather} from "./forecast";
 import {getHoliday} from "./holiday";
+import {getKeywordRanking} from "./realTimeKeywordRanking";
 
 // The client is initialized and then started to get an active connection to the platform
 const rtm = new RTMClient(token);
@@ -19,7 +20,7 @@ rtm.start().catch(console.error);
 
 rtm.on('ready', () => {
     console.log("rtm ready");
-    
+
     // web.chat.postMessage({ channel: general, text: '봇 준비 완료', icon_emoji: ":hugging_face:" });
 })
 
@@ -27,6 +28,7 @@ const bansaList = ['바보', '멍청이'];
 const dustList = ['미세먼지', '미먼'];
 const forecastLIst = ['현재날씨', '현날'];
 const holidayList = ['휴일'];
+const keywordRankingList = ['실검'];
 
 rtm.on('message', async (message) => {
     try {
@@ -60,7 +62,7 @@ rtm.on('message', async (message) => {
             web.chat.postMessage({channel, text: message, icon_emoji: ":fox_face:"});
         }
 
-        // 공휴일
+        // -------------------- 공휴일 --------------------
         if (checkHasKeyword(holidayList, text)) {
             console.log(subtype);
             if (subtype === 'bot_message') {
@@ -71,7 +73,7 @@ rtm.on('message', async (message) => {
             let month = text.split(" ")[0].replace("월", "");
             const result = await getHoliday(month);
             console.log("result: " + result);
-            
+
             let message = "";
             console.log(result["resultCode"]);
             if (result["resultCode"] === 200) {
@@ -81,13 +83,28 @@ rtm.on('message', async (message) => {
             } else {
                 message = `죄송합니다 서버에 문제가 있나봐요`
             }
+
             console.log(message);
             web.chat.postMessage({channel, username: '노는 게 제일 좋아', text: message, icon_url: "https://pbs.twimg.com/profile_images/931571066534690816/YjOsFwcJ_400x400.jpg"});
+        }
+
+        // -------------------- 실검 --------------------
+        if (checkHasKeyword(keywordRankingList, text)) {
+            const result = await getKeywordRanking();
+            //console.log(result);
+
+            let message = "";
+            for (let i = 0; i < 10; i++) {
+                message += `[${i + 1}] ${result[i]}\n`;
+            }
+            console.log(message);
+            web.chat.postMessage({channel, username: "급상승 검색어", text: message, icon_url: "http://www.econovill.com/news/photo/201411/224765_9935_410.png"});
         }
 
     } catch (e) {
         console.error("message error : ", error);
     }
+
 });
 
 
