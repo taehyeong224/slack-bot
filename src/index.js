@@ -6,7 +6,8 @@ import * as schedule from "node-schedule";
 import {getStatus} from "./dust";
 import {general, token, TYPE} from "./config";
 import {getCurrentWeather} from "./forecast";
-import {getMatches} from "./football";
+import {getHoliday} from "./holiday";
+import {getKeywordRanking} from "./realTimeKeywordRanking";
 
 // The client is initialized and then started to get an active connection to the platform
 const rtm = new RTMClient(token);
@@ -16,20 +17,23 @@ rtm.start().catch(console.error);
 // Calling `rtm.on(eventName, eventHandler)` allows you to handle events (see: https://api.slack.com/events)
 // When the connection is active, the 'ready' event will be triggered
 
+
 rtm.on('ready', () => {
     console.log("rtm ready");
-});
+    
+    // web.chat.postMessage({ channel: general, text: '봇 준비 완료', icon_emoji: ":hugging_face:" });
+})
 
 const bansaList = ['바보', '멍청이'];
 const dustList = ['미세먼지', '미먼'];
 const forecastLIst = ['현재날씨', '현날'];
-const stackOverFlow = ['so:', 'SO:'];
-const football = ['f:', 'F:'];
+const holidayList = ['휴일'];
+const keywordRankingList = ['실검'];
 
 rtm.on('message', async (message) => {
     try {
         console.log(message);
-        const {channel, user, text} = message;
+        const {subtype, channel, user, text} = message;
         if (checkHasKeyword(bansaList, text)) {
             web.chat.postMessage({channel, text: '반사', icon_emoji: ":raised_hand_with_fingers_splayed:"});
         }
@@ -58,24 +62,48 @@ rtm.on('message', async (message) => {
             web.chat.postMessage({channel, text: message, icon_emoji: ":fox_face:"});
         }
 
-        if (checkHasKeyword(stackOverFlow, text)) {
-            const search = text.toLowerCase().trim().split("so:")[1].trim().split(" ").join("+");
-            web.chat.postMessage({channel: general, text: `https://stackoverflow.com/search?q=${search}`, icon_emoji: ":fox_face:"})
-        }
-
-        if (checkHasKeyword(football, text)) {
-            const params = text.toLowerCase().trim().split("f:")[1].trim().split(" ");
-            if (params.length !== 3) {
-                console.log("ex) f: premier-league 19-20 round-3")
-            } else {
-                const msg = await getMatches(params[0], params[1], params[2]);
-                web.chat.postMessage({channel: general, text: msg, icon_emoji: ":fox_face:"})
+        // -------------------- 공휴일 --------------------
+        if (checkHasKeyword(holidayList, text)) {
+            console.log(subtype);
+            if (subtype === 'bot_message') {
+                return;
             }
-        }
-    } catch (e) {
-        console.error("message error : ", e);
-    }
 
+            //const result = await getHoliday(text.split)
+            let month = text.split(" ")[0].replace("월", "");
+            const result = await getHoliday(month);
+            console.log("result: " + result);
+            
+            let message = "";
+            console.log(result["resultCode"]);
+            if (result["resultCode"] === 200) {
+                message = result["message"];
+            } else if (result["resultCode"] === 404) {
+                message = `죄송합니다 휴일이 조회 되지 않습니다. ㅠㅠ`
+            } else {
+                message = `죄송합니다 서버에 문제가 있나봐요`
+            }
+            
+            console.log(message);
+            web.chat.postMessage({channel, username: '노는 게 제일 좋아', text: message, icon_url: "https://pbs.twimg.com/profile_images/931571066534690816/YjOsFwcJ_400x400.jpg"});
+        }
+
+        // -------------------- 실검 --------------------
+        if (checkHasKeyword(keywordRankingList, text)) {
+            const result = await getKeywordRanking();
+            //console.log(result);
+
+            let message = "";
+            for (let i = 0; i < 10; i++) {
+                message += `[${i + 1}] ${result[i]}\n`;
+            }
+            console.log(message);
+            web.chat.postMessage({channel, username: "급상승 검색어", text: message, icon_url: "http://www.econovill.com/news/photo/201411/224765_9935_410.png"});
+        }
+
+    } catch (e) {
+        console.error("message error : ", error);
+    }
 });
 
 
@@ -121,7 +149,7 @@ pm2.5: ${pm25.data} ${pm25.status}`
     });
 };
 
-
 const checkHasKeyword = (list, target) => {
-    return list.filter(s => target.includes(s)).length > 0;
+    const filter = list.filter(s => target.includes(s));
+    return filter.length > 0;
 };
