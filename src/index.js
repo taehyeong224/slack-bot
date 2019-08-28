@@ -114,21 +114,9 @@ const checkHasKeyword = (list, target) => {
 
 
 //Search.js
-require('dotenv').config();
-
-const convertSearchQuery = require("./query").convertSearchQuery;
-const token = process.env.SLACK_TOKEN;
-// web, rtm은 중복되므로 쓰지 않음
-
-if(!token){
-    console.log('You must specify a token to use this example');
-    process.exitCode = 1;
-    return;
-}
-
 //메시지 입력 이벤트 핸들러
 rtm.on("message", (message) => {
-    if(!message.text.includes("검색!")){
+    if(!message.text.includes("검색")){
         return;
     }
     let queryURI = convertSearchQuery(message.text);
