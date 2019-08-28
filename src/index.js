@@ -6,6 +6,8 @@ import * as schedule from "node-schedule";
 import {getStatus} from "./dust";
 import {general, token, TYPE} from "./config";
 import {getCurrentWeather} from "./forecast";
+import { convertSearchQuery } from './Search';
+import { ConsoleLogger } from '@slack/logger';
 
 
 // The client is initialized and then started to get an active connection to the platform
@@ -109,3 +111,32 @@ const checkHasKeyword = (list, target) => {
     const filter = list.filter(s => target.includes(s));
     return filter.length > 0;
 };
+
+
+//Search.js
+require('dotenv').config();
+
+const convertSearchQuery = require("./query").convertSearchQuery;
+const token = process.env.SLACK_TOKEN;
+// web, rtm은 중복되므로 쓰지 않음
+
+if(!token){
+    console.log('You must specify a token to use this example');
+    process.exitCode = 1;
+    return;
+}
+
+//메시지 입력 이벤트 핸들러
+rtm.on("message", (message) => {
+    if(!message.text.includes("검색!")){
+        return;
+    }
+    let queryURI = convertSearchQuery(message.text);
+    if(queryURI){
+        web.chat.postMessage({
+            channel : message.channel,
+            text : queryURI,
+            as_user : true
+        });
+    }
+});

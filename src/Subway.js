@@ -1,7 +1,10 @@
 import * as axios from "axios";
 import {DUST_STATUS, PM10, PM25, TYPE} from "./config";
-const baseURL = `http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getCtprvnMesureLIst`;
+//사용할 Open API주소 입력
+const baseURL = `http://swopenAPI.seoul.go.kr/api/subway/744a50566a69666f37315a63676850/xml/fastTransfer/0/5/서울   `;
 
+
+//여기부터 시작
 export const getStatus = async type => {
   const data = await requestDust(type);
   if (!data) {
@@ -43,7 +46,7 @@ export const getStatus = async type => {
     data: seoulData
   };
 };
-
+//미세먼지 데이터 요청
 const requestDust = async type => {
   try {
     const key = process.env.DUST_API_KEY;
@@ -56,3 +59,5 @@ const requestDust = async type => {
     return false;
   }
 };
+//지하철 환승정보 요청
+const requestSubway
