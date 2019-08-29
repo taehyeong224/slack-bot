@@ -8,6 +8,7 @@ export const channels = {
 export const token = process.env.TOKEN;
 export const FORECAST_TOKEN = process.env.FORECAST_TOKEN;
 export const FOOTBALL_KEY = process.env.FOOTBALL_KEY;
+export const HOLIDAY_API_KEY = process.env.HOLIDAY_API_KEY;
 
 export const general = channels.test;
 
