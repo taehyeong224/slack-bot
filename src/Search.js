@@ -30,7 +30,7 @@ export function convertSearchQuery(input){
 
 //메시지에서 쿼리 파라미터를 추출
 export function extractSearchQuery(input){
-    return input.split("검색")[1]//쿼리 추출 대상 : 검색! 문자열 이후 값
+    return input.split("검색")[1]//쿼리 추출 대상 : 검색 문자열 이후 값
     .replace(/(^\s*)|(\s*$)/gi,"")//띄워쓰기가 되어 있지 않을 수 있으므로 앞 뒤 공백 제거
     .split(" ")
     .join("+");

@@ -8,6 +8,7 @@ import {general, token, TYPE} from "./config";
 import {getCurrentWeather} from "./forecast";
 import {getHoliday} from "./holiday";
 import {getKeywordRanking} from "./realTimeKeywordRanking";
+import {search} from "./cafe";
 
 import { convertSearchQuery } from './Search';
 import { ConsoleLogger } from '@slack/logger';
@@ -174,4 +175,17 @@ rtm.on("message", (message) => {
             as_user : true
         });
     }
+});
+
+//------------------카페 식당 검색기-------------------
+//cafe.js
+RTM_EVENTS = require('slack-client').RTM_EVENTS;
+rtm.on(RTM_EVENTS.MESSAGE, function (message) {
+    var channel = message.channel;
+    var user = message.user;
+    var text = message.text;
+
+    var detecting = ['커피', '배고파', '뭐먹을까', '뭐먹지','저녁','점심', '야근'];
+    var matches = stringSimilarity.findBestMatch(text, detecting).bestMatch;
+    web.chat.postMessage(channel, resp, {username: "baseballbot"});
 });
