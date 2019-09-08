@@ -28,6 +28,17 @@ describe('배열', function () {
         it ("checkHasKeyword 함수에 배열에 없는 값을 넣으면 false 를 리턴해야 한다.", function (done) {
             expect(checkHasKeyword(dustList, "바보")).to.eq(false);
             done()
-        })
+        });
+
+        it ("checkHasKeyword 함수에 배열에 있는 값을 넣으면 true 를 리턴해야 한다. #1", function (done) {
+            expect(checkHasKeyword(dustList, dustList[0])).to.eq(true);
+            done()
+        });
+
+        it ("checkHasKeyword 함수에 배열에 있는 값을 넣으면 true 를 리턴해야 한다. #2", function (done) {
+            expect(checkHasKeyword(dustList, dustList[1])).to.eq(true);
+            done()
+        });
+
     });
 });
