@@ -40,5 +40,25 @@ describe('배열', function () {
             done()
         });
 
+        it ("checkHasKeyword 함수에 배열에 있는 값을 넣으면 true 를 리턴해야 한다. #3", function (done) {
+            expect(checkHasKeyword(forecastLIst, forecastLIst[0])).to.eq(true);
+            done()
+        });
+
+        it ("checkHasKeyword 함수에 배열에 있는 값을 넣으면 true 를 리턴해야 한다. #4", function (done) {
+            expect(checkHasKeyword(forecastLIst, forecastLIst[1])).to.eq(true);
+            done()
+        });
+
+        it ("checkHasKeyword 함수에 배열에 있는 값을 넣으면 true 를 리턴해야 한다. #5", function (done) {
+            expect(checkHasKeyword(holidayList, holidayList[0])).to.eq(true);
+            done()
+        });
+
+
+        it ("checkHasKeyword 함수에 배열에 있는 값을 넣으면 true 를 리턴해야 한다. #6", function (done) {
+            expect(checkHasKeyword(keywordRankingList, keywordRankingList[0])).to.eq(true);
+            done()
+        });
     });
 });
