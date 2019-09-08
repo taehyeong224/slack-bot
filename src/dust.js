@@ -48,7 +48,6 @@ const requestDust = async type => {
   try {
     const key = process.env.DUST_API_KEY;
     const url = `${baseURL}?serviceKey=${key}&numOfRows=1&pageNo=1&itemCode=${type}&dataGubun=HOUR&searchCondition=WEEK&_returnType=json`;
-    console.log(`url : ${url}`);
     const response = await axios.get(url);
     return response.data;
   } catch (e) {

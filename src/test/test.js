@@ -1,5 +1,7 @@
 import {expect} from "chai"
 import {checkHasKeyword} from "../index";
+import {getStatus} from "../dust";
+import {TYPE} from "../config";
 
 
 describe('배열', function () {
@@ -61,4 +63,31 @@ describe('배열', function () {
             done()
         });
     });
+});
+
+
+describe("dust", function () {
+
+    describe("getStatus check", function () {
+        this.timeout(50000);
+        it("getStatus TYPE.PM10 을 인자로 넣으면 값이 나와야 한다.", function (done) {
+            getStatus(TYPE.PM10).then((result) => {
+                expect(result).to.not.eq(null);
+                expect(result).to.not.eq(undefined);
+                expect(result).haveOwnProperty("status");
+                expect(result).haveOwnProperty("data");
+                done()
+            })
+        })
+
+        it("getStatus TYPE.PM25 을 인자로 넣으면 값이 나와야 한다.", function (done) {
+            getStatus(TYPE.PM25).then((result) => {
+                expect(result).to.not.eq(null);
+                expect(result).to.not.eq(undefined);
+                expect(result).haveOwnProperty("status");
+                expect(result).haveOwnProperty("data");
+                done()
+            })
+        })
+    })
 });
