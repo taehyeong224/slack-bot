@@ -1,8 +1,5 @@
 import * as axios from "axios";
 import {HOLIDAY_API_KEY} from "./config";
-//import {convert} from 'xml-js';
-//const parseString = require('xml-js').parseString;
-
 const baseURL = `http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService`;
 
 export const getHoliday = async(month) => {
@@ -33,18 +30,11 @@ export const getHoliday = async(month) => {
                 resultCode: 500,
             };
         }
-
-        //console.log(holidayList);
-
-        //const result = convert.xml2json(response.data.response.body.items);
-        //console.log(result);
     } catch(e) {
         console.error("axios error", e.response);
-        //if (e.response.status === 404) {
         return {
             resultCode: 404
         }
-        //}
     }
 }
 
@@ -54,7 +44,7 @@ const printMessage = (month, holiday) => {
 
     if (Array.isArray(holiday)) {
         for (let i = 0; i < holiday.length; i++) {
-            if (dateName != holiday[i].dateName) {
+            if (dateName !== holiday[i].dateName) {
                 message += `\n${holiday[i].dateName} : `;
                 dateName = holiday[i].dateName;
             } else {
@@ -89,11 +79,4 @@ const getDate = (holidayLocdate) => {
 
     return new Date(`${year}-${month}-${date}`);
 }
-
-// Number.prototype.pad = function() 으로 하면 작동함
-// Number.prototype.pad = () => {
-//     let str = String(this);
-//     if (str.length < 2) str = "0" + str;
-//     return str;
-// }
 
