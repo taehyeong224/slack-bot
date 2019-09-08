@@ -8,10 +8,8 @@ import {general, token, TYPE} from "./config";
 import {getCurrentWeather} from "./forecast";
 import {getHoliday} from "./holiday";
 import {getKeywordRanking} from "./realTimeKeywordRanking";
-import {search} from "./cafe";
 
-import { convertSearchQuery } from './Search';
-import { ConsoleLogger } from '@slack/logger';
+import {convertSearchQuery} from './Search';
 
 
 // The client is initialized and then started to get an active connection to the platform
@@ -25,9 +23,7 @@ rtm.start().catch(console.error);
 
 rtm.on('ready', () => {
     console.log("rtm ready");
-
-    // web.chat.postMessage({ channel: general, text: '봇 준비 완료', icon_emoji: ":hugging_face:" });
-})
+});
 
 const bansaList = ['바보', '멍청이'];
 const dustList = ['미세먼지', '미먼'];
@@ -79,7 +75,7 @@ rtm.on('message', async (message) => {
             let month = text.split(" ")[0].replace("월", "");
             const result = await getHoliday(month);
             console.log("result: " + result);
-            
+
             let message = "";
             console.log(result["resultCode"]);
             if (result["resultCode"] === 200) {
@@ -89,9 +85,14 @@ rtm.on('message', async (message) => {
             } else {
                 message = `죄송합니다 서버에 문제가 있나봐요`
             }
-            
+
             console.log(message);
-            web.chat.postMessage({channel, username: '노는 게 제일 좋아', text: message, icon_url: "https://pbs.twimg.com/profile_images/931571066534690816/YjOsFwcJ_400x400.jpg"});
+            web.chat.postMessage({
+                channel,
+                username: '노는 게 제일 좋아',
+                text: message,
+                icon_url: "https://pbs.twimg.com/profile_images/931571066534690816/YjOsFwcJ_400x400.jpg"
+            });
         }
 
         // -------------------- 실검 --------------------
@@ -104,7 +105,25 @@ rtm.on('message', async (message) => {
                 message += `[${i + 1}] ${result[i]}\n`;
             }
             console.log(message);
-            web.chat.postMessage({channel, username: "급상승 검색어", text: message, icon_url: "http://www.econovill.com/news/photo/201411/224765_9935_410.png"});
+            web.chat.postMessage({
+                channel,
+                username: "급상승 검색어",
+                text: message,
+                icon_url: "http://www.econovill.com/news/photo/201411/224765_9935_410.png"
+            });
+        }
+
+        // 검색
+        if (!message.text.includes("검색")) {
+            return;
+        }
+        let queryURI = convertSearchQuery(message.text);
+        if (queryURI) {
+            web.chat.postMessage({
+                channel: message.channel,
+                text: queryURI,
+                as_user: true
+            });
         }
 
     } catch (e) {
@@ -161,31 +180,14 @@ const checkHasKeyword = (list, target) => {
 };
 
 
-//Search.js
-//메시지 입력 이벤트 핸들러
-rtm.on("message", (message) => {
-    if(!message.text.includes("검색")){
-        return;
-    }
-    let queryURI = convertSearchQuery(message.text);
-    if(queryURI){
-        web.chat.postMessage({
-            channel : message.channel,
-            text : queryURI,
-            as_user : true
-        });
-    }
-});
-
 //------------------카페 식당 검색기-------------------
 //cafe.js
-RTM_EVENTS = require('slack-client').RTM_EVENTS;
-rtm.on(RTM_EVENTS.MESSAGE, function (message) {
-    var channel = message.channel;
-    var user = message.user;
-    var text = message.text;
-
-    var detecting = ['커피', '배고파', '뭐먹을까', '뭐먹지','저녁','점심', '야근'];
-    var matches = stringSimilarity.findBestMatch(text, detecting).bestMatch;
-    web.chat.postMessage(channel, resp, {username: "baseballbot"});
-});
+// rtm.on(RTM_EVENTS.MESSAGE, function (message) {
+//     var channel = message.channel;
+//     var user = message.user;
+//     var text = message.text;
+//
+//     var detecting = ['커피', '배고파', '뭐먹을까', '뭐먹지','저녁','점심', '야근'];
+//     var matches = stringSimilarity.findBestMatch(text, detecting).bestMatch;
+//     web.chat.postMessage(channel, resp, {username: "baseballbot"});
+// });

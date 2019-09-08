@@ -1,6 +1,6 @@
-var request = require('request');
-var async = require('async');
-var cheerio = require('cheerio');
+const request = require('request');
+const async = require('async');
+const cheerio = require('cheerio');
 
 const baseURL = 'http://section.blog.naver.com/sub/SearchBlog.nhn?type=post&option.keyword=%EC%96%B4%EC%9D%80%EB%8F%99%20%EB%A7%9B%EC%A7%91&term=&option.startDate=&option.endDate=&option.page.currentPage={{page}}&option.orderBy=sim';
 
@@ -54,9 +54,5 @@ const search = function (page, result, end) {
         }
     });
 };
-
-search(1, [], function (result) {
-    console.log(result);
-});
 
 
