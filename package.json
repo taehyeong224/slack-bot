@@ -6,7 +6,7 @@
     "start": "node dist/index.js",
     "web": "node dist/webhook.js",
     "build": "babel -d dist src",
-    "test": "node_modules/.bin/mocha test"
+    "test": "npm run build && NODE_ENV=test node_modules/.bin/mocha dist/test"
   },
   "engines": {
     "node": "10.16.0",

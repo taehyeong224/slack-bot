@@ -24,8 +24,7 @@
 
 //메시지를 구글 검색 쿼리로 변환하여 반환
 export function convertSearchQuery(input){
-    let query = extractSearchQuery(input);
-    return "https://www.google.co.kr/search?q="+ query;
+    return "https://www.google.co.kr/search?q=" + extractSearchQuery(input);
 }
 
 //메시지에서 쿼리 파라미터를 추출
