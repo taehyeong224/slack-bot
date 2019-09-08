@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node dist/index.js",
     "web": "node dist/webhook.js",
-    "build": "babel -d dist src"
+    "build": "babel -d dist src",
+    "test": "node_modules/.bin/mocha test"
   },
   "engines": {
     "node": "10.16.0",
@@ -38,6 +39,9 @@
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
     "@babel/polyfill": "^7.4.4",
-    "@babel/preset-env": "^7.5.5"
+    "@babel/preset-env": "^7.5.5",
+    "@types/chai": "^4.2.1",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0"
   }
 }
