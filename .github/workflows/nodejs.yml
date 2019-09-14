@@ -28,7 +28,6 @@ jobs:
         FOOTBALL_KEY: '61b031ab5dmsh20359493ae08a90p19602djsnf5bf002e22d8'
         HOLIDAY_API_KEY: 'lBBRnvK6Ek%2BPnb tG3t1M7FJb13qDfUC8CqW2vcRF6s%2B0cBaeeUxpwOziJ7SzBnpmN6ZBQ5TPcisYZ%2BoM8gXy%2BA%3D%3D'
     - name: Slack notification
-      needs: Test
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         SLACK_USERNAME: github ci # Optional.
