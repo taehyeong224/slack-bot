@@ -30,10 +30,11 @@ jobs:
         HOLIDAY_API_KEY: 'lBBRnvK6Ek%2BPnb tG3t1M7FJb13qDfUC8CqW2vcRF6s%2B0cBaeeUxpwOziJ7SzBnpmN6ZBQ5TPcisYZ%2BoM8gXy%2BA%3D%3D'
     - name: Slack notification
       env:
+        NODE_VERSION: ${{ matrix.node-version }}
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         SLACK_USERNAME: github ci # Optional.
         SLACK_CHANNEL: test # Optional.
-        SLACK_OVERRIDE_MESSAGE: 'build 및 test 완료'
+        SLACK_OVERRIDE_MESSAGE: '${NODE_VERSION} build 및 test 완료'
       uses: Ilshidur/action-slack@master
       with:
         args: 'A new commit has been pushed.'
