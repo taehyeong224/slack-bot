@@ -10,14 +10,13 @@ jobs:
     strategy:
       matrix:
         node-version: [8.x, 10.x, 12.x]
-
     steps:
     - uses: actions/checkout@v1
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: npm install, build, and test
+    - name: Test
       run: |
         npm install
         npm run test
@@ -28,3 +27,13 @@ jobs:
         FORECAST_TOKEN: '677351504163558e6b83764082c12e8d'
         FOOTBALL_KEY: '61b031ab5dmsh20359493ae08a90p19602djsnf5bf002e22d8'
         HOLIDAY_API_KEY: 'lBBRnvK6Ek%2BPnb tG3t1M7FJb13qDfUC8CqW2vcRF6s%2B0cBaeeUxpwOziJ7SzBnpmN6ZBQ5TPcisYZ%2BoM8gXy%2BA%3D%3D'
+    - name: Slack notification
+      needs: Test
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_USERNAME: github ci # Optional.
+        SLACK_CHANNEL: test # Optional.
+        SLACK_OVERRIDE_MESSAGE: 'Custom message' # Optional.
+      uses: Ilshidur/action-slack@master
+      with:
+        args: '빌드가 끝났어'
