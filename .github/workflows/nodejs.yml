@@ -32,7 +32,5 @@ jobs:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         SLACK_USERNAME: github ci # Optional.
         SLACK_CHANNEL: test # Optional.
-        SLACK_OVERRIDE_MESSAGE: 'Custom message' # Optional.
+        SLACK_OVERRIDE_MESSAGE: '${GITHUB_REF} build 및 test 완료'
       uses: Ilshidur/action-slack@master
-      with:
-        args: '빌드가 끝났어'
