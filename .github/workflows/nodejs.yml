@@ -20,7 +20,7 @@ jobs:
       run: |
         npm install
         npm run test
-        echo ${github.ref}
+        echo ${GITHUB_REF}
       env:
         NODE_ENV: test
         CI: true
