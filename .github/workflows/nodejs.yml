@@ -34,7 +34,7 @@ jobs:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         SLACK_USERNAME: github ci # Optional.
         SLACK_CHANNEL: test # Optional.
-        SLACK_OVERRIDE_MESSAGE: '${NODE_VERSION} build 및 test 완료'
+        SLACK_OVERRIDE_MESSAGE: ${NODE_VERSION} + 'build 및 test 완료'
       uses: Ilshidur/action-slack@master
       with:
         args: 'A new commit has been pushed.'
