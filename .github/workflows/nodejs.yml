@@ -30,6 +30,7 @@ jobs:
     - name: Slack notification
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        GITHUB_REF: ${{github.ref}}
         SLACK_USERNAME: github ci # Optional.
         SLACK_CHANNEL: test # Optional.
         SLACK_OVERRIDE_MESSAGE: '${GITHUB_REF} ${{GITHUB_REF}} {{GITHUB_REF}} build 및 test 완료'
