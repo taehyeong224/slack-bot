@@ -50,6 +50,8 @@ jobs:
         with:
           args: container:login
       - name: push
+        run: |
+          heroku apps
         uses: actions/heroku@master
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
