@@ -37,3 +37,26 @@ jobs:
       uses: Ilshidur/action-slack@master
       with:
         args: 'A new commit has been pushed.'
+  release:
+    runs-on: ubuntu-16.04
+    needs: build
+    steps:
+    - uses: actions/checkout@master
+    - name: login
+      uses: actions/heroku@master
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      with:
+        args: container:login
+    - name: push
+      uses: actions/heroku@master
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      with:
+        args: container:push -a calm-fortress-1234 web
+    - name: release
+      uses: actions/heroku@master
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      with:
+        args: container:release -a calm-fortress-1234 web
