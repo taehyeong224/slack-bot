@@ -59,6 +59,9 @@ jobs:
           HEROKU_APP: kth-slack-bot
         with:
           args: container:login
+        run: |
+          heroku git:remote -a kth-slack-bot
+          git push heroku master
       - name: heroku login fail
         if: failure()
         env:
@@ -69,10 +72,6 @@ jobs:
         uses: Ilshidur/action-slack@master
         with:
           args: 'heroku login fail'
-      - name: push
-        run: |
-          heroku git:remote -a kth-slack-bot
-          git push heroku master
 #      - name: push
 #        uses: actions/heroku@master
 #        env:
@@ -80,16 +79,16 @@ jobs:
 #          HEROKU_APP: 'kth-slack-bot'
 #        with:
 #          args: container:push -a kth-slack-bot worker
-      - name: heroku push fail
-        if: failure()
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_USERNAME: github ci # Optional.
-          SLACK_CHANNEL: test # Optional.
-          SLACK_OVERRIDE_MESSAGE: 'heroku push fail'
-        uses: Ilshidur/action-slack@master
-        with:
-          args: 'heroku push fail'
+#      - name: heroku push fail
+#        if: failure()
+#        env:
+#          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+#          SLACK_USERNAME: github ci # Optional.
+#          SLACK_CHANNEL: test # Optional.
+#          SLACK_OVERRIDE_MESSAGE: 'heroku push fail'
+#        uses: Ilshidur/action-slack@master
+#        with:
+#          args: 'heroku push fail'
 #      - name: release
 #        uses: actions/heroku@master
 #        env:
