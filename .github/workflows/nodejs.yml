@@ -28,6 +28,16 @@ jobs:
           FORECAST_TOKEN: '677351504163558e6b83764082c12e8d'
           FOOTBALL_KEY: '61b031ab5dmsh20359493ae08a90p19602djsnf5bf002e22d8'
           HOLIDAY_API_KEY: 'lBBRnvK6Ek%2BPnb tG3t1M7FJb13qDfUC8CqW2vcRF6s%2B0cBaeeUxpwOziJ7SzBnpmN6ZBQ5TPcisYZ%2BoM8gXy%2BA%3D%3D'
+      - name: Test fail
+        if: failure()
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_USERNAME: github ci # Optional.
+          SLACK_CHANNEL: test # Optional.
+          SLACK_OVERRIDE_MESSAGE: ${{ matrix.node-version }} build 및 test 실패 https://github.com/taehyeong224/slack-bot/commit/${{github.sha}}
+          uses: Ilshidur/action-slack@master
+          with:
+            args: 'test fail'
       - name: Slack notification
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
@@ -49,6 +59,16 @@ jobs:
           HEROKU_APP: kth-slack-bot
         with:
           args: container:login
+      - name: heroku login fail
+          if: failure()
+          env:
+            SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+            SLACK_USERNAME: github ci # Optional.
+            SLACK_CHANNEL: test # Optional.
+            SLACK_OVERRIDE_MESSAGE: 'heroku login fail'
+            uses: Ilshidur/action-slack@master
+            with:
+              args: 'heroku login fail'
       - name: push
         uses: actions/heroku@master
         env:
@@ -56,6 +76,16 @@ jobs:
           HEROKU_APP: 'kth-slack-bot'
         with:
           args: container:push -a calm-fortress-1234 web
+      - name: heroku push fail
+          if: failure()
+          env:
+            SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+            SLACK_USERNAME: github ci # Optional.
+            SLACK_CHANNEL: test # Optional.
+            SLACK_OVERRIDE_MESSAGE: 'heroku push fail'
+            uses: Ilshidur/action-slack@master
+            with:
+              args: 'heroku push fail'
       - name: release
         uses: actions/heroku@master
         env:
@@ -63,3 +93,13 @@ jobs:
           HEROKU_APP: 'kth-slack-bot'
         with:
           args: container:release -a calm-fortress-1234 web
+      - name: heroku release fail
+          if: failure()
+          env:
+            SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+            SLACK_USERNAME: github ci # Optional.
+            SLACK_CHANNEL: test # Optional.
+            SLACK_OVERRIDE_MESSAGE: 'heroku release fail'
+            uses: Ilshidur/action-slack@master
+            with:
+              args: 'heroku release fail'
