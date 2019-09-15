@@ -60,15 +60,15 @@ jobs:
         with:
           args: container:login
       - name: heroku login fail
-          if: failure()
-          env:
-            SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-            SLACK_USERNAME: github ci # Optional.
-            SLACK_CHANNEL: test # Optional.
-            SLACK_OVERRIDE_MESSAGE: 'heroku login fail'
-            uses: Ilshidur/action-slack@master
-            with:
-              args: 'heroku login fail'
+        if: failure()
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_USERNAME: github ci # Optional.
+          SLACK_CHANNEL: test # Optional.
+          SLACK_OVERRIDE_MESSAGE: 'heroku login fail'
+          uses: Ilshidur/action-slack@master
+          with:
+            args: 'heroku login fail'
       - name: push
         uses: actions/heroku@master
         env:
@@ -77,15 +77,15 @@ jobs:
         with:
           args: container:push -a calm-fortress-1234 web
       - name: heroku push fail
-          if: failure()
-          env:
-            SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-            SLACK_USERNAME: github ci # Optional.
-            SLACK_CHANNEL: test # Optional.
-            SLACK_OVERRIDE_MESSAGE: 'heroku push fail'
-            uses: Ilshidur/action-slack@master
-            with:
-              args: 'heroku push fail'
+        if: failure()
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_USERNAME: github ci # Optional.
+          SLACK_CHANNEL: test # Optional.
+          SLACK_OVERRIDE_MESSAGE: 'heroku push fail'
+          uses: Ilshidur/action-slack@master
+          with:
+            args: 'heroku push fail'
       - name: release
         uses: actions/heroku@master
         env:
@@ -94,12 +94,12 @@ jobs:
         with:
           args: container:release -a calm-fortress-1234 web
       - name: heroku release fail
-          if: failure()
-          env:
-            SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-            SLACK_USERNAME: github ci # Optional.
-            SLACK_CHANNEL: test # Optional.
-            SLACK_OVERRIDE_MESSAGE: 'heroku release fail'
-            uses: Ilshidur/action-slack@master
-            with:
-              args: 'heroku release fail'
+        if: failure()
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_USERNAME: github ci # Optional.
+          SLACK_CHANNEL: test # Optional.
+          SLACK_OVERRIDE_MESSAGE: 'heroku release fail'
+          uses: Ilshidur/action-slack@master
+          with:
+            args: 'heroku release fail'
