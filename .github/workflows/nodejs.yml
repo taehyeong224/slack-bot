@@ -75,7 +75,7 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_APP: 'kth-slack-bot'
         with:
-          args: container:push -a kth-slack-bot web worker --recursive
+          args: container:push -a kth-slack-bot worker
       - name: heroku push fail
         if: failure()
         env:
@@ -92,7 +92,7 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_APP: 'kth-slack-bot'
         with:
-          args: container:release -a kth-slack-bot web worker --recursive
+          args: container:release -a kth-slack-bot worker
       - name: heroku release fail
         if: failure()
         env:
