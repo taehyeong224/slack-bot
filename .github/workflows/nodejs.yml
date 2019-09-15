@@ -35,9 +35,9 @@ jobs:
           SLACK_USERNAME: github ci # Optional.
           SLACK_CHANNEL: test # Optional.
           SLACK_OVERRIDE_MESSAGE: ${{ matrix.node-version }} build 및 test 실패 https://github.com/taehyeong224/slack-bot/commit/${{github.sha}}
-          uses: Ilshidur/action-slack@master
-          with:
-            args: 'test fail'
+        uses: Ilshidur/action-slack@master
+        with:
+          args: 'test fail'
       - name: Slack notification
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
@@ -66,9 +66,9 @@ jobs:
           SLACK_USERNAME: github ci # Optional.
           SLACK_CHANNEL: test # Optional.
           SLACK_OVERRIDE_MESSAGE: 'heroku login fail'
-          uses: Ilshidur/action-slack@master
-          with:
-            args: 'heroku login fail'
+        uses: Ilshidur/action-slack@master
+        with:
+          args: 'heroku login fail'
       - name: push
         uses: actions/heroku@master
         env:
@@ -83,9 +83,9 @@ jobs:
           SLACK_USERNAME: github ci # Optional.
           SLACK_CHANNEL: test # Optional.
           SLACK_OVERRIDE_MESSAGE: 'heroku push fail'
-          uses: Ilshidur/action-slack@master
-          with:
-            args: 'heroku push fail'
+        uses: Ilshidur/action-slack@master
+        with:
+          args: 'heroku push fail'
       - name: release
         uses: actions/heroku@master
         env:
@@ -100,6 +100,6 @@ jobs:
           SLACK_USERNAME: github ci # Optional.
           SLACK_CHANNEL: test # Optional.
           SLACK_OVERRIDE_MESSAGE: 'heroku release fail'
-          uses: Ilshidur/action-slack@master
-          with:
-            args: 'heroku release fail'
+        uses: Ilshidur/action-slack@master
+        with:
+          args: 'heroku release fail'
