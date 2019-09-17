@@ -87,12 +87,12 @@ jobs:
         with:
           args: 'heroku web push fail'
       - name: worker push
-          uses: actions/heroku@master
-          env:
-            HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-            HEROKU_APP: 'kth-slack-bot'
-          with:
-            args: container:push worker
+        uses: actions/heroku@master
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_APP: 'kth-slack-bot'
+        with:
+          args: container:push worker
       - name: heroku worker push fail
           if: failure()
           env:
