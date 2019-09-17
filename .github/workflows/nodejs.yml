@@ -103,3 +103,13 @@ jobs:
         uses: Ilshidur/action-slack@master
         with:
           args: 'heroku release fail'
+      - name: complete deploy to heroku
+        if: failure()
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_USERNAME: github ci # Optional.
+          SLACK_CHANNEL: test # Optional.
+          SLACK_OVERRIDE_MESSAGE: 'heroku 배포 완료 테스트: 바보'
+        uses: Ilshidur/action-slack@master
+        with:
+          args: 'heroku 배포 완료 테스트: 바보'
