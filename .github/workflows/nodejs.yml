@@ -59,9 +59,6 @@ jobs:
           HEROKU_APP: kth-slack-bot
         with:
           args: container:login
-        run: |
-          heroku git:remote -a kth-slack-bot
-          git push heroku master
       - name: heroku login fail
         if: failure()
         env:
@@ -72,37 +69,54 @@ jobs:
         uses: Ilshidur/action-slack@master
         with:
           args: 'heroku login fail'
-#      - name: push
-#        uses: actions/heroku@master
-#        env:
-#          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-#          HEROKU_APP: 'kth-slack-bot'
-#        with:
-#          args: container:push -a kth-slack-bot worker
-#      - name: heroku push fail
-#        if: failure()
-#        env:
-#          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-#          SLACK_USERNAME: github ci # Optional.
-#          SLACK_CHANNEL: test # Optional.
-#          SLACK_OVERRIDE_MESSAGE: 'heroku push fail'
-#        uses: Ilshidur/action-slack@master
-#        with:
-#          args: 'heroku push fail'
-#      - name: release
-#        uses: actions/heroku@master
-#        env:
-#          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-#          HEROKU_APP: 'kth-slack-bot'
-#        with:
-#          args: container:release -a kth-slack-bot worker
-#      - name: heroku release fail
-#        if: failure()
-#        env:
-#          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-#          SLACK_USERNAME: github ci # Optional.
-#          SLACK_CHANNEL: test # Optional.
-#          SLACK_OVERRIDE_MESSAGE: 'heroku release fail'
-#        uses: Ilshidur/action-slack@master
-#        with:
-#          args: 'heroku release fail'
+      - name: web push
+        uses: actions/heroku@master
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_APP: 'kth-slack-bot'
+        with:
+          args: container:push web
+      - name: heroku web push fail
+        if: failure()
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_USERNAME: github ci # Optional.
+          SLACK_CHANNEL: test # Optional.
+          SLACK_OVERRIDE_MESSAGE: 'heroku web push fail'
+        uses: Ilshidur/action-slack@master
+        with:
+          args: 'heroku web push fail'
+      - name: worker push
+          uses: actions/heroku@master
+          env:
+            HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+            HEROKU_APP: 'kth-slack-bot'
+          with:
+            args: container:push worker
+      - name: heroku worker push fail
+          if: failure()
+          env:
+            SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+            SLACK_USERNAME: github ci # Optional.
+            SLACK_CHANNEL: test # Optional.
+            SLACK_OVERRIDE_MESSAGE: 'heroku worker push fail'
+          uses: Ilshidur/action-slack@master
+          with:
+            args: 'heroku worker push fail'
+      - name: release
+        uses: actions/heroku@master
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_APP: 'kth-slack-bot'
+        with:
+          args: container:release web worker
+      - name: heroku release fail
+        if: failure()
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_USERNAME: github ci # Optional.
+          SLACK_CHANNEL: test # Optional.
+          SLACK_OVERRIDE_MESSAGE: 'heroku release fail'
+        uses: Ilshidur/action-slack@master
+        with:
+          args: 'heroku release fail'
