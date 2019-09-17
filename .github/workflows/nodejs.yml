@@ -104,7 +104,6 @@ jobs:
         with:
           args: 'heroku release fail'
       - name: complete deploy to heroku
-        if: failure()
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_USERNAME: github ci # Optional.
