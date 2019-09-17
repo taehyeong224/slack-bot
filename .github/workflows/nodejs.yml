@@ -94,15 +94,15 @@ jobs:
         with:
           args: container:push worker
       - name: heroku worker push fail
-          if: failure()
-          env:
-            SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-            SLACK_USERNAME: github ci # Optional.
-            SLACK_CHANNEL: test # Optional.
-            SLACK_OVERRIDE_MESSAGE: 'heroku worker push fail'
-          uses: Ilshidur/action-slack@master
-          with:
-            args: 'heroku worker push fail'
+        if: failure()
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_USERNAME: github ci # Optional.
+          SLACK_CHANNEL: test # Optional.
+          SLACK_OVERRIDE_MESSAGE: 'heroku worker push fail'
+        uses: Ilshidur/action-slack@master
+        with:
+          args: 'heroku worker push fail'
       - name: release
         uses: actions/heroku@master
         env:
