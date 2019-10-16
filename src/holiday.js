@@ -85,4 +85,3 @@ const getDate = (holidayLocdate) => {
 
     return new Date(`${year}-${month}-${date}`);
 }
-
