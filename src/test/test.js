@@ -118,7 +118,7 @@ describe("football", function () {
 
 describe("Holiday", function () {
    describe("getHoliday", function () {
-       this.timeout(50000);
+       this.timeout(500000);
        it("9월 휴일이라 치면, 9월 휴일이 나온다.", function (done) {
            getHoliday("9").then((result) => {
                expect(result).haveOwnProperty("resultCode");
