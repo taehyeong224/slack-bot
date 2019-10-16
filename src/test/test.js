@@ -2,6 +2,8 @@ import {expect} from "chai"
 import {checkHasKeyword} from "../index";
 import {getStatus} from "../dust";
 import {TYPE} from "../config";
+import {describe, it} from "mocha";
+import {getMatches} from "../football";
 
 
 describe('배열', function () {
@@ -27,38 +29,38 @@ describe('배열', function () {
             done()
         });
 
-        it ("checkHasKeyword 함수에 배열에 없는 값을 넣으면 false 를 리턴해야 한다.", function (done) {
+        it("checkHasKeyword 함수에 배열에 없는 값을 넣으면 false 를 리턴해야 한다.", function (done) {
             expect(checkHasKeyword(dustList, "바보")).to.eq(false);
             done()
         });
 
-        it ("checkHasKeyword 함수에 배열에 있는 값을 넣으면 true 를 리턴해야 한다. #1", function (done) {
+        it("checkHasKeyword 함수에 배열에 있는 값을 넣으면 true 를 리턴해야 한다. #1", function (done) {
             expect(checkHasKeyword(dustList, dustList[0])).to.eq(true);
             done()
         });
 
-        it ("checkHasKeyword 함수에 배열에 있는 값을 넣으면 true 를 리턴해야 한다. #2", function (done) {
+        it("checkHasKeyword 함수에 배열에 있는 값을 넣으면 true 를 리턴해야 한다. #2", function (done) {
             expect(checkHasKeyword(dustList, dustList[1])).to.eq(true);
             done()
         });
 
-        it ("checkHasKeyword 함수에 배열에 있는 값을 넣으면 true 를 리턴해야 한다. #3", function (done) {
+        it("checkHasKeyword 함수에 배열에 있는 값을 넣으면 true 를 리턴해야 한다. #3", function (done) {
             expect(checkHasKeyword(forecastLIst, forecastLIst[0])).to.eq(true);
             done()
         });
 
-        it ("checkHasKeyword 함수에 배열에 있는 값을 넣으면 true 를 리턴해야 한다. #4", function (done) {
+        it("checkHasKeyword 함수에 배열에 있는 값을 넣으면 true 를 리턴해야 한다. #4", function (done) {
             expect(checkHasKeyword(forecastLIst, forecastLIst[1])).to.eq(true);
             done()
         });
 
-        it ("checkHasKeyword 함수에 배열에 있는 값을 넣으면 true 를 리턴해야 한다. #5", function (done) {
+        it("checkHasKeyword 함수에 배열에 있는 값을 넣으면 true 를 리턴해야 한다. #5", function (done) {
             expect(checkHasKeyword(holidayList, holidayList[0])).to.eq(true);
             done()
         });
 
 
-        it ("checkHasKeyword 함수에 배열에 있는 값을 넣으면 true 를 리턴해야 한다. #6", function (done) {
+        it("checkHasKeyword 함수에 배열에 있는 값을 넣으면 true 를 리턴해야 한다. #6", function (done) {
             expect(checkHasKeyword(keywordRankingList, keywordRankingList[0])).to.eq(true);
             done()
         });
@@ -88,6 +90,27 @@ describe("dust", function () {
                 expect(result).haveOwnProperty("data");
                 done()
             })
+        })
+    })
+});
+
+describe("football", function () {
+    describe("getMatches", function () {
+        this.timeout(50000);
+        it("wrong param return number", function (done) {
+           getMatches("premierleague", "19-20", "round-9").then((result) => {
+               expect(result).to.be.a("string");
+               expect(result).to.be.eq("");
+               done();
+           });
+        });
+
+        it("적절한 파라미터 사용 시, 올바른 값 반환", function (done) {
+            getMatches("premier-league", "19-20", "round-9").then((result) => {
+                expect(result).to.be.a("string");
+                expect(result).to.be.length.above(0);
+                done();
+            });
         })
     })
 });

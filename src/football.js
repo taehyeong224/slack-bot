@@ -67,7 +67,6 @@ const requestMatch = async (league, season, round) => {
  * @returns {string}
  */
 const getStringForPrint = (data) => {
-    console.log("data: ", data)
     let message = "";
     for (let item of data) {
         message += `
