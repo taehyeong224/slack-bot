@@ -37,7 +37,7 @@ export const getHoliday = async(month) => {
             };
         }
     } catch(e) {
-        console.error("axios error", e.response);
+        console.error("axios error", e.message);
         return {
             resultCode: 404
         }

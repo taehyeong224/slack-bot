@@ -125,6 +125,9 @@ describe("Holiday", function () {
                expect(result).haveOwnProperty("message");
                expect(result.resultCode).to.be.eq(200);
                done();
+           }).catch((error) => {
+               console.error("error : ", error.message);
+               done();
            })
        })
    })
