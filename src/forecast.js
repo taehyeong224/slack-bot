@@ -2,7 +2,11 @@ import * as axios from "axios";
 import {FORECAST_TOKEN} from "./config";
 
 const baseURL = `https://api.openweathermap.org/data/2.5/weather`;
-
+/**
+ * @description 실제 open api 에 요청하는 함수
+ * @param city {string}
+ * @returns {Promise<{cod: number}|Object>}
+ */
 const requestCurrentWeather = async (city) => {
     try {
         const url = `${baseURL}?q=${encodeURIComponent(convertCity(city))}&appid=${FORECAST_TOKEN}&units=metric`;
@@ -19,7 +23,11 @@ const requestCurrentWeather = async (city) => {
     }
 };
 
-
+/**
+ * @description {@link requestCurrentWeather}함수의 결과를 가공하는 함수
+ * @param city
+ * @returns {Promise<{cod: number}|{tempMax: *, temp: *, weather: *, cod: number, humidity: *, tempMin: *}>}
+ */
 export const getCurrentWeather = async (city) => {
     const result = await requestCurrentWeather(city);
     console.log("getCurrentWeather > result : ", result);
@@ -43,6 +51,11 @@ export const getCurrentWeather = async (city) => {
     }
 };
 
+/**
+ * 한글로 들어온 도시를 영어로 변환
+ * @param name
+ * @returns {string|*}
+ */
 const convertCity = (name) => {
     if (name === "성남") {
         return "seongnam";

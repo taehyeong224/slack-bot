@@ -2,6 +2,11 @@ import * as axios from "axios";
 import {DUST_STATUS, PM10, PM25, TYPE} from "./config";
 const baseURL = `http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getCtprvnMesureLIst`;
 
+/**
+ * @description 함수 {@link requestDust}의 결과를 가공하는 함수
+ * @param {TYPE} type
+ * @returns {Promise<{data: Object, status: string}|boolean>}
+ */
 export const getStatus = async type => {
   const data = await requestDust(type);
   if (!data) {
@@ -44,6 +49,11 @@ export const getStatus = async type => {
   };
 };
 
+/**
+ * 실제로 open api 에 요청하는 함수
+ * @param {TYPE} type
+ * @returns {Promise<boolean|Object>}
+ */
 const requestDust = async type => {
   try {
     const key = process.env.DUST_API_KEY;

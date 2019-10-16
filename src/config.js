@@ -26,6 +26,9 @@ export const PM25 = {
     VERY_BAD: 999
 };
 
+/**
+ * @type {{PM25: string, PM10: string}}
+ */
 export const TYPE = {
     PM10: "PM10",
     PM25: "PM25"

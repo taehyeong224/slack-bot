@@ -6,6 +6,13 @@ import {FOOTBALL_KEY} from "./config";
 
 const mem = {};
 
+/**
+ * ex) f: premier-league 19-20 round-3
+ * @param {string} league
+ * @param {string} season
+ * @param {string} round
+ * @returns {Promise<string|number>}
+ */
 export const getMatches = async (league, season, round) => {
     const address = `${league}/${season}/${round}`;
     console.log(`address : ${address}`);
@@ -28,6 +35,13 @@ export const getMatches = async (league, season, round) => {
 };
 
 
+/**
+ * 실제 축구 정보 api 요청함수
+ * @param {string} league
+ * @param {string} season
+ * @param {string} round
+ * @returns {Promise<boolean|*>}
+ */
 const requestMatch = async (league, season, round) => {
     try {
         const baseURL = `https://sportsop-soccer-sports-open-data-v1.p.rapidapi.com/v1/leagues/${league}/seasons/${season}/rounds/${round}/matches`;
@@ -47,6 +61,11 @@ const requestMatch = async (league, season, round) => {
     }
 };
 
+/**
+ * 결과물을 슬랙용 string 으로 변환
+ * @param {Array} data
+ * @returns {string}
+ */
 const getStringForPrint = (data) => {
     console.log("data: ", data)
     let message = "";

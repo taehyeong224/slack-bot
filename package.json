@@ -7,7 +7,10 @@
     "web": "node dist/webhook.js",
     "build": "babel -d dist src",
     "test": "npm run build && NODE_ENV=test node_modules/.bin/mocha dist/test",
-    "two": "concurrently \"npm run start\" \"npm run web\""
+    "two": "concurrently \"npm run start\" \"npm run web\"",
+    "doc_buld": "documentation build src/index.js -f html -o docs",
+    "doc_lint": "documentation lint src/**",
+    "doc": "npm run doc_lint && npm run doc_buld"
   },
   "engines": {
     "node": "10.16.0",

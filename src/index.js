@@ -9,6 +9,7 @@ import {getCurrentWeather} from "./forecast";
 import {getHoliday} from "./holiday";
 import {getKeywordRanking} from "./realTimeKeywordRanking";
 import {convertSearchQuery} from './Search';
+import {getMatches} from "./football";
 
 
 // The client is initialized and then started to get an active connection to the platform
@@ -27,6 +28,7 @@ if (process.env.NODE_ENV !== "test") {
     const forecastLIst = ['현재날씨', '현날'];
     const holidayList = ['휴일'];
     const keywordRankingList = ['실검'];
+    const football = ['f:', 'F:'];
 
     rtm.on('message', async (message) => {
         try {
@@ -124,6 +126,17 @@ if (process.env.NODE_ENV !== "test") {
                 }
                 return;
             }
+            // football
+            if (checkHasKeyword(football, text)) {
+                const params = text.toLowerCase().trim().split("f:")[1].trim().split(" ");
+                if (params.length !== 3) {
+                    console.log("ex) f: premier-league 19-20 round-3")
+                } else {
+                    const msg = await getMatches(params[0], params[1], params[2]);
+                    web.chat.postMessage({channel: general, text: msg, icon_emoji: ":fox_face:"})
+                }
+                return;
+            }
 
         } catch (e) {
             console.error("message error : ", error);
@@ -158,7 +171,10 @@ if (process.env.NODE_ENV !== "test") {
 }
 
 
-
+/**
+ * 슬랙 메시지 가공하여 보내기
+ * @returns {Promise<void>}
+ */
 const dust = async () => {
     const pm10 = await getStatus(TYPE.PM10)
     const pm25 = await getStatus(TYPE.PM25)
@@ -176,20 +192,13 @@ pm2.5: ${pm25.data} ${pm25.status}`
     });
 };
 
+/**
+ * 해당 키워드 검색
+ * @param {Array} list
+ * @param {string} target
+ * @returns {boolean}
+ */
 export const checkHasKeyword = (list, target) => {
     const filter = list.filter(s => target.includes(s));
     return filter.length > 0;
 };
-
-
-//------------------카페 식당 검색기-------------------
-//cafe.js
-// rtm.on(RTM_EVENTS.MESSAGE, function (message) {
-//     var channel = message.channel;
-//     var user = message.user;
-//     var text = message.text;
-//
-//     var detecting = ['커피', '배고파', '뭐먹을까', '뭐먹지','저녁','점심', '야근'];
-//     var matches = stringSimilarity.findBestMatch(text, detecting).bestMatch;
-//     web.chat.postMessage(channel, resp, {username: "baseballbot"});
-// });
