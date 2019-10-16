@@ -1,11 +1,17 @@
 import * as axios from "axios";
 import {HOLIDAY_API_KEY} from "./config";
+import moment from "moment";
 const baseURL = `http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService`;
 
 export const getHoliday = async(month) => {
-    let solYear = 2019;
+    if (month.length < 2) month = `0${month}`;
+    const now = moment();
+    const nowMonth = now.format("MM");
+    const nowYear = now.format("YYYY");
+    let solYear = nowMonth > month ? `${Number(nowYear) + 1}` : nowYear;
+    console.log(`solYear: ${solYear}`)
     let solMonth = String(month);
-    if (solMonth.length < 2) solMonth = `0${solMonth}`;
+
     try {
         const url = `${baseURL}/getHoliDeInfo?solYear=${solYear}&solMonth=${solMonth}&ServiceKey=${HOLIDAY_API_KEY}`;
         console.log(url);

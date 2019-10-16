@@ -4,6 +4,7 @@ import {getStatus} from "../dust";
 import {TYPE} from "../config";
 import {describe, it} from "mocha";
 import {getMatches} from "../football";
+import {getHoliday} from "../holiday";
 
 
 describe('배열', function () {
@@ -113,4 +114,18 @@ describe("football", function () {
             });
         })
     })
+});
+
+describe("Holiday", function () {
+   describe("getHoliday", function () {
+       this.timeout(50000);
+       it("9월 휴일이라 치면, 9월 휴일이 나온다.", function (done) {
+           getHoliday("9").then((result) => {
+               expect(result).haveOwnProperty("resultCode");
+               expect(result).haveOwnProperty("message");
+               expect(result.resultCode).to.be.eq(200);
+               done();
+           })
+       })
+   })
 });
