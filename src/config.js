@@ -96,6 +96,7 @@ export const GET_SLACK_PAYLOAD = (nameOfArray, {channel, message}) => {
             payload = {channel, username: "급상승 검색어", text: message, icon_url: "http://www.econovill.com/news/photo/201411/224765_9935_410.png"};
             break;
         case NAME_OF_ARRAY.football:
+            payload = {channel, username: "말이 많은 자", text: message, icon_emoji: ":soccer:"};
             break;
         case NAME_OF_ARRAY.search:
             payload = {channel, text: message, as_user: true};
