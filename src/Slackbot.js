@@ -52,7 +52,7 @@ export class Slackbot {
     addDustSchedule() {
         schedule.scheduleJob('30 * * * *', async () => {
             const dust = new Dust("");
-            const msg = dust.build();
+            const msg = await dust.build();
             this.sendToSlack({
                 channel: general, text: msg, icon_emoji: ":mask:"
             });
