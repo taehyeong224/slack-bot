@@ -9,4 +9,7 @@ module.exports = {
       corejs: "2"
     }],
   ],
+  plugins: [
+    "@babel/plugin-proposal-class-properties"
+  ]
 }
