@@ -1,4 +1,4 @@
-import {expect} from "chai"
+import {expect, assert} from "chai"
 import {checkHasKeyword} from "../index";
 import {getStatus} from "../dust";
 import {TYPE} from "../config";
@@ -99,11 +99,11 @@ describe("football", function () {
     describe("getMatches", function () {
         this.timeout(50000);
         it("wrong param return number", function (done) {
-           getMatches("premierleague", "19-20", "round-9").then((result) => {
-               expect(result).to.be.a("string");
-               expect(result).to.be.eq("");
-               done();
-           });
+            getMatches("premierleague", "19-20", "round-9").then((result) => {
+                expect(result).to.be.a("string");
+                expect(result).to.be.eq("");
+                done();
+            });
         });
 
         it("적절한 파라미터 사용 시, 올바른 값 반환", function (done) {
@@ -117,18 +117,18 @@ describe("football", function () {
 });
 
 describe("Holiday", function () {
-   describe("getHoliday", function () {
-       this.timeout(500000);
-       it("9월 휴일이라 치면, 9월 휴일이 나온다.", function (done) {
-           getHoliday("9").then((result) => {
-               expect(result).haveOwnProperty("resultCode");
-               expect(result).haveOwnProperty("message");
-               expect(result.resultCode).to.be.eq(200);
-               done();
-           }).catch((error) => {
-               console.error("error : ", error.message);
-               done();
-           })
-       })
-   })
+    describe("getHoliday", function () {
+        this.timeout(500000);
+        it("9월 휴일이라 치면, 9월 휴일이 나온다.", async function () {
+            try {
+                const result = await getHoliday("9");
+                expect(result).haveOwnProperty("resultCode");
+                expect(result).haveOwnProperty("message");
+                expect(result.resultCode).to.be.eq(200);
+            } catch (e) {
+                console.error("e : ", e);
+                assert.isNotOk(e, e.message)
+            }
+        })
+    })
 });

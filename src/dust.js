@@ -1,5 +1,6 @@
 import * as axios from "axios";
 import {DUST_STATUS, PM10, PM25, TYPE} from "./config";
+
 const baseURL = `http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getCtprvnMesureLIst`;
 
 /**
@@ -64,4 +65,24 @@ const requestDust = async type => {
     console.error("axios error", e);
     return false;
   }
+};
+
+
+/**
+ * 슬랙 메시지 가공하여 보내기
+ * @returns {Promise<void>}
+ */
+export const getDustStatus = async () => {
+  const pm10 = await getStatus(TYPE.PM10);
+  const pm25 = await getStatus(TYPE.PM25);
+  let message = ``;
+  if (!pm10 || !pm25) {
+    message = `서버에 문제가 생겼나봐요`
+  } else {
+    message = `
+현재 서울 미세 먼지
+pm10: ${pm10.data} ${pm10.status}
+pm2.5: ${pm25.data} ${pm25.status}`
+  }
+  return message;
 };

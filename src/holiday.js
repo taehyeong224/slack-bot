@@ -1,21 +1,20 @@
 import * as axios from "axios";
 import {HOLIDAY_API_KEY} from "./config";
 import moment from "moment";
+
 const baseURL = `http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService`;
 
-export const getHoliday = async(month) => {
+export const getHoliday = async (month) => {
     if (month.length < 2) month = `0${month}`;
     const now = moment();
     const nowMonth = now.format("MM");
     const nowYear = now.format("YYYY");
     let solYear = nowMonth > month ? `${Number(nowYear) + 1}` : nowYear;
-    console.log(`solYear: ${solYear}`)
     let solMonth = String(month);
 
     try {
         const url = `${baseURL}/getHoliDeInfo?solYear=${solYear}&solMonth=${solMonth}&ServiceKey=${HOLIDAY_API_KEY}`;
         console.log(url);
-
         const response = await axios.get(url);
         let resultCode = response.data.response.header.resultCode;
         const holiday = response.data.response.body.items.item;
@@ -30,13 +29,12 @@ export const getHoliday = async(month) => {
                 resultCode: 200,
                 message: msg
             };
-        }
-        else {
+        } else {
             return {
                 resultCode: 500,
             };
         }
-    } catch(e) {
+    } catch (e) {
         console.error("axios error", e.message);
         return {
             resultCode: 404

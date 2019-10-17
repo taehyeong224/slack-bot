@@ -3,7 +3,7 @@ import '@babel/polyfill'
 import {RTMClient} from "@slack/rtm-api";
 import {WebClient} from "@slack/web-api";
 import * as schedule from "node-schedule";
-import {getStatus} from "./dust";
+import {getDustStatus, getStatus} from "./dust";
 import {general, token, TYPE} from "./config";
 import {getCurrentWeather} from "./forecast";
 import {getHoliday} from "./holiday";
@@ -38,7 +38,11 @@ if (process.env.NODE_ENV !== "test") {
                 return {channel, text: '반사', icon_emoji: ":raised_hand_with_fingers_splayed:"};
             }
             if (checkHasKeyword(dustList, text)) {
-                return dust();
+                const msg = await getDustStatus();
+                web.chat.postMessage({
+                    channel: general, text: msg, icon_emoji: ":mask:"
+                });
+                return;
             }
 
             if (checkHasKeyword(forecastLIst, text)) {
@@ -165,32 +169,14 @@ if (process.env.NODE_ENV !== "test") {
         web.chat.postMessage({channel: general, text: `점심 맛있게 드셨나요?`, icon_emoji: ":raised_hand_with_fingers_splayed:"});
     });
 
-    schedule.scheduleJob('30 * * * *', () => {
-        dust();
+    schedule.scheduleJob('30 * * * *', async () => {
+        const msg = await getDustStatus();
+        web.chat.postMessage({
+            channel: general, text: msg, icon_emoji: ":mask:"
+        });
     });
 }
 
-
-/**
- * 슬랙 메시지 가공하여 보내기
- * @returns {Promise<void>}
- */
-const dust = async () => {
-    const pm10 = await getStatus(TYPE.PM10)
-    const pm25 = await getStatus(TYPE.PM25)
-    let message = ``;
-    if (!pm10 || !pm25) {
-        message = `서버에 문제가 생겼나봐요`
-    } else {
-        message = `
-현재 서울 미세 먼지
-pm10: ${pm10.data} ${pm10.status}
-pm2.5: ${pm25.data} ${pm25.status}`
-    }
-    web.chat.postMessage({
-        channel: general, text: message, icon_emoji: ":mask:"
-    });
-};
 
 /**
  * 해당 키워드 검색
