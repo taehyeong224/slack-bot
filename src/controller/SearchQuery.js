@@ -3,6 +3,7 @@ import {AbstractMaker} from "./AbstractMaker";
 export class SearchQuery extends AbstractMaker {
     constructor(text = "") {
         super(text);
+        this.keyword = ["검색"]
     }
 
     build() {
@@ -28,4 +29,7 @@ export class SearchQuery extends AbstractMaker {
         return `https://www.google.co.kr/search?q=${this.text}`;
     }
 
+    makePayLoad({channel, message}) {
+        return {channel, text: message, as_user: true};
+    }
 }

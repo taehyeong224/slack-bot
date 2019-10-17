@@ -13,6 +13,7 @@ export class Football extends AbstractMaker {
 
     constructor(text = "") {
         super(text);
+        this.keyword = ['f:', 'F:'];
     }
 
     async build() {
@@ -83,4 +84,7 @@ export class Football extends AbstractMaker {
         return message;
     }
 
+    makePayLoad({channel, message}) {
+        return {channel, username: "말이 많은 자", text: message, icon_emoji: ":soccer:"};
+    }
 }

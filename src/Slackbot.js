@@ -1,16 +1,26 @@
 import {RTMClient} from "@slack/rtm-api";
-import {general, GET_SLACK_PAYLOAD, KEYWORD, MATCHING, token} from "./config";
+import {general, token} from "./config";
 import {WebClient} from "@slack/web-api";
 import * as schedule from "node-schedule";
 import {Dust} from "./controller/Dust";
+import {Bansa} from "./controller/Bansa";
+import {Football} from "./controller/Football";
+import {Holiday} from "./controller/Holiday";
+import {KeywordRanking} from "./controller/KeywordRanking";
+import {SearchQuery} from "./controller/SearchQuery";
+import {Weather} from "./controller/Weather";
 
 export class Slackbot {
     rtm;
     web;
 
+    controllers;
+
     constructor() {
         this.rtm = new RTMClient(token);
         this.web = new WebClient(token);
+
+        this.controllers = [new Bansa(), new Dust(), new Football(), new Holiday(), new KeywordRanking(), new SearchQuery(), new Weather()];
     }
 
     setup() {
@@ -27,11 +37,12 @@ export class Slackbot {
             if (subtype === 'bot_message') {
                 return;
             }
-            for (let key in MATCHING) {
-                if (this.checkHasKeyword(KEYWORD[key], text)) {
-                    const controller = new MATCHING[key](text);
+
+            for (let controller of this.controllers) {
+                if (this.checkHasKeyword(controller.keyword, text)) {
+                    controller.text = text;
                     const message = await controller.build();
-                    const payLoad = GET_SLACK_PAYLOAD(key, {message, channel});
+                    const payLoad = controller.makePayLoad({message, channel});
                     this.sendToSlack(payLoad);
                     break;
                 }

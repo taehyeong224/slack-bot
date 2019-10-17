@@ -16,6 +16,7 @@ export class Holiday extends AbstractMaker {
 
     constructor(text = "") {
         super(text);
+        this.keyword = ['휴일'];
     }
 
     async build() {
@@ -126,4 +127,7 @@ export class Holiday extends AbstractMaker {
         return new Date(`${year}-${month}-${date}`);
     }
 
+    makePayLoad({channel, message}) {
+        return {channel, username: '노는 게 제일 좋아', text: message, icon_url: "https://pbs.twimg.com/profile_images/931571066534690816/YjOsFwcJ_400x400.jpg"};
+    }
 }

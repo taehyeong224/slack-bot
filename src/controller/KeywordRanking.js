@@ -8,6 +8,7 @@ export class KeywordRanking extends AbstractMaker {
 
     constructor(text = "") {
         super(text);
+        this.keyword = ['실검'];
     }
 
     async build() {
@@ -50,4 +51,7 @@ export class KeywordRanking extends AbstractMaker {
         return message;
     }
 
+    makePayLoad({channel, message}) {
+        return {channel, username: "급상승 검색어", text: message, icon_url: "http://www.econovill.com/news/photo/201411/224765_9935_410.png"};
+    }
 }

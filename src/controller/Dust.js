@@ -9,6 +9,7 @@ export class Dust extends AbstractMaker {
 
     constructor(text = "") {
         super(text);
+        this.keyword = ['미세먼지', '미먼'];
     }
 
     async build() {
@@ -84,5 +85,9 @@ export class Dust extends AbstractMaker {
 현재 서울 미세 먼지
 pm10: ${pm10.data} ${pm10.status}
 pm2.5: ${pm25.data} ${pm25.status}`
+    }
+
+    makePayLoad({channel, message}) {
+        return {channel, text: message, icon_emoji: ":mask:"};
     }
 }

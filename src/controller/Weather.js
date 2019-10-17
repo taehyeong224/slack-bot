@@ -8,6 +8,7 @@ export class Weather extends AbstractMaker {
 
     constructor(text = "") {
         super(text);
+        this.keyword = ['현재날씨', '현날'];
     }
 
     async build() {
@@ -105,4 +106,7 @@ export class Weather extends AbstractMaker {
         }
     }
 
+    makePayLoad({channel, message}) {
+        return {channel, text: message, icon_emoji: ":fox_face:"};
+    }
 }
