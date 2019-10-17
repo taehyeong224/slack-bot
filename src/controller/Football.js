@@ -44,7 +44,7 @@ export class Football extends AbstractMaker {
             const result = await this.request();
             if (result && result.data.statusCode === "200") {
                 this.data = result.data.matches;
-                mem[address] = JSON.stringify(data);
+                mem[address] = JSON.stringify(this.data);
             } else {
                 this.data = [];
                 return 500;
