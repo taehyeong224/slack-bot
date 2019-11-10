@@ -10,7 +10,7 @@ import {getHoliday} from "./holiday";
 import {getKeywordRanking} from "./realTimeKeywordRanking";
 import {convertSearchQuery} from './Search';
 
-
+console.log(process.env.NODE_ENV, process.env.NODE_ENV !== "test")
 // The client is initialized and then started to get an active connection to the platform
 const rtm = new RTMClient(token);
 const web = new WebClient(token);

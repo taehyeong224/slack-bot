@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "test_windows": "npm run build && set NODE_ENV=test && mocha dist/test",
     "start": "node dist/index.js",
     "web": "node dist/webhook.js",
     "build": "babel -d dist src",
