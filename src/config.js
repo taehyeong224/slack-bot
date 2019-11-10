@@ -1,3 +1,11 @@
+import {Dust} from "./controller/Dust";
+import {Football} from "./controller/Football";
+import {Holiday} from "./controller/Holiday";
+import {KeywordRanking} from "./controller/KeywordRanking";
+import {SearchQuery} from "./controller/SearchQuery";
+import {Bansa} from "./controller/Bansa";
+import {Weather} from "./controller/Weather";
+
 require('dotenv').config();
 
 export const channels = {
@@ -26,6 +34,9 @@ export const PM25 = {
     VERY_BAD: 999
 };
 
+/**
+ * @type {{PM25: string, PM10: string}}
+ */
 export const TYPE = {
     PM10: "PM10",
     PM25: "PM25"
